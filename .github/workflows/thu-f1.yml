@@ -1,0 +1,31 @@
+name: thu-f1
+on:
+  push:
+    branches: [thu/f1]
+permissions:
+  contents: read
+jobs:
+  ca-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - run: ls -la | head -30; python3 --version
+      - env:
+          XUONG_TOKEN_APP: gia
+          XUONG_SHA: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+        run: python3 -m cong.gate_app; echo "rc=$?"
+  chi-cong:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          sparse-checkout: /cong/
+          sparse-checkout-cone-mode: false
+      - run: ls -la; python3 --version
+      - env:
+          XUONG_TOKEN_APP: gia
+          XUONG_SHA: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+        run: python3 -m cong.gate_app; echo "rc=$?"
